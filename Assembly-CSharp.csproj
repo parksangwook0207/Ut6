@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\0.Scripts\Kiosk.cs" />
     <Compile Include="Assets\0.Scripts\Titlename.cs" />
+    <Compile Include="Assets\0.Scripts\ItemDetail.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7938894834734321625}
   - component: {fileID: 7938894834734321607}
   - component: {fileID: 7938894834734321624}
+  - component: {fileID: -9083293367400939027}
   m_Layer: 5
   m_Name: Panel_DetailMenu
   m_TagString: Untagged
@@ -77,6 +78,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-9083293367400939027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938894834734321626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ce2812feed1344f99972124cca3035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 7938894835184944364}
+  priceText: {fileID: 7938894835037861019}
 --- !u!1 &7938894835037861021
 GameObject:
   m_ObjectHideFlags: 0
