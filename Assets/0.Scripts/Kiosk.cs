@@ -30,6 +30,9 @@ public class Kiosk : MonoBehaviour
     [SerializeField] private Transform detailParent;
     [SerializeField] private ItemDetail detailPrefab;
 
+    [SerializeField] private ItemBtmController ibCont;
+    [SerializeField] private ItemBtmDetail itembd;
+
     List<string> titleList = new List<string>();
     Dictionary<string, KioskData> menuDic = new Dictionary<string, KioskData>();
     private MainMenuType selectType = MainMenuType.FastFood;
@@ -106,55 +109,52 @@ public class Kiosk : MonoBehaviour
     }
     void SubMenuSetting(Toggle toggle)
     {
-        menuDic.Clear();
-        
-        for (int i = detailParent.childCount - 1; i > 0; i--)
+        if (toggle.isOn)
         {
-            Destroy(detailParent.GetChild(i).gameObject);
+            menuDic.Clear();
+
+            switch (toggle.name)
+            {
+                case "햄버거":
+                    {
+                        string[] keys = { "불고기 버거", "새우버거", "모차렐라인더버거", "치즈버거", "치킨버거" };
+                        int[] price = { 3000, 5000, 8000, 4500, 6000 };
+                        DataSetCrateMenu(keys, price);
+                    }
+                    break;
+                case "음료":
+                    {
+                        string[] keys = { "코카콜라", "사이다", "제로콜라", "제로사이다", "환타", "펩시" };
+                        int[] price = { 2000, 2000, 3000, 3300, 3500, 3600 };
+                        DataSetCrateMenu(keys, price);
+                    }
+                    break;
+                case "스낵류":
+                    {
+                        string[] keys = { "감자튀김", "어니언링", "오징어", "너겟", "치즈스틱" };
+                        int[] price = { 2000, 2000, 3000, 3300, 3500 };
+                        DataSetCrateMenu(keys, price);
+                    }
+                    break;
+
+                case "소스":
+                    {
+                        string[] keys = { "케찹", "칠리", "머스타드", "치즈" };
+                        int[] price = { 500, 700, 300, 330 };
+                        DataSetCrateMenu(keys, price);
+                    }
+                    break;
+                case "아이스크림":
+                    {
+                        string[] keys = { "초코", "바닐라", "딸기", "오레오", "녹차", "민트초코" };
+                        int[] price = { 1000, 1500, 2000, 5000, 100, 7777 };
+                        DataSetCrateMenu(keys, price);
+                    }
+                    break;
+
+            }
         }
         
-        
-        switch (toggle.name)
-        {
-            case "햄버거":
-                {
-                   
-                    string[] keys = { "불고기 버거", "새우버거", "모차렐라인더버거", "치즈버거", "치킨버거" };
-                    int[] price = { 3000, 5000, 8000, 4500, 6000 };
-                    DataSetCrateMenu(keys, price);
-                }
-                break;
-            case "음료":
-                {
-                    string[] keys = { "코카콜라", "사이다", "제로콜라", "제로사이다", "환타", "펩시" };
-                    int[] price = { 2000, 2000, 3000, 3300, 3500, 3600 };
-                    DataSetCrateMenu(keys, price);
-                }
-                break;
-            case "스낵류":
-                {
-                    string[] keys = { "감자튀김", "어니언링", "오징어", "너겟", "치즈",};
-                    int[] price = { 2000, 2000, 3000, 3300, 3500 };
-                    DataSetCrateMenu(keys, price);
-                }
-                break;
-
-            case "소스":
-                {
-                    string[] keys = { "케찹", "칠리", "머스타드", "치즈" };
-                    int[] price = { 500, 700, 300, 330 };
-                    DataSetCrateMenu(keys, price);
-                }
-                break;
-            case "아이스크림":
-                {
-                    string[] keys = { "초코", "바닐라", "딸기", "오레오", "녹차", "민트초코"};
-                    int[] price = { 1000, 1500, 2000, 5000, 100, 7777 };
-                    DataSetCrateMenu(keys, price);
-                }
-                break;
-
-        }
 
         
         }
@@ -169,67 +169,46 @@ public class Kiosk : MonoBehaviour
             menuDic.Add(keys[i], data);
         }
 
-        if (ItemDetails.Count == 0)
+        // 오브젝트 생성
+        if (detailParent.childCount < keys.Length)
         {
-            foreach (var item in menuDic)
+            int gap = System.Math.Abs(detailParent.childCount - keys.Length);
+            for (int i = 0; i < gap; i++)
             {
-                ItemDetail id = Instantiate(detailPrefab, detailParent)
-                .SetnameText(item.Value.name).SetPriceText(item.Value.price);
-
-
-
-                ItemDetails.Add(id);
+                ItemDetails.Add(Instantiate(detailPrefab, detailParent));
             }
         }
-        else if (ItemDetails.Count > detailParent.childCount)
-        {
-            int addCount = 0;
-            foreach (var item in menuDic)
-            {
-                if (addCount < detailParent.childCount)
-                {
-                    ItemDetails[addCount]
-                        .SetnameText(item.Value.name).SetPriceText(item.Value.price);
 
-                }
-                else
-                {
-                    ItemDetail id = Instantiate(detailPrefab, detailParent)
-                    .SetnameText(item.Value.name).SetPriceText(item.Value.price);
-                }
-                addCount++;
+        int index = 0;
+        foreach (var item in menuDic)
+        {
+            ItemDetails[index].gameObject.SetActive(true);
+            ItemDetails[index]              
+                .SetParent(ibCont.transform)
+                .SetItemBD(itembd)
+                .SetIBCont(ibCont)
+                .SetKioskData(item.Value);
+
+            index++;
+        }
+
+        int close = menuDic.Count - (detailParent.childCount);
+        if (close < 0)
+        {
+            int c = detailParent.childCount - 1;
+            for (int i = 0; i < System.Math.Abs(close); i++)
+            {
+                ItemDetails[c].gameObject.SetActive(false);
+                c--;
             }
         }
-        else
-        {
-            for (int i = 0; i < keys.Length; i++)
-            {
-                if (i < menuDic.Count)
-                {
-                    foreach (var item in menuDic)
-                    {
-                       
-                    }
-                }
-            }
-            int addCount = 0;
-            foreach (var item in menuDic)
-            {
-                if (addCount > detailParent.childCount)
-                {
-                    ItemDetails[addCount]
-                        .SetnameText(item.Value.name).SetPriceText(item.Value.price);
 
-                }
-                else
-                {
-                    It
-                }
-                addCount++;
-            }
-        }
+
+
+
     }
 }
+    
     
 
 
