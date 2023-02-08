@@ -58,8 +58,8 @@
   <ItemGroup>
     <Compile Include="Assets\0.Scripts\ItemDetail.cs" />
     <Compile Include="Assets\0.Scripts\Kiosk.cs" />
-    <Compile Include="Assets\0.Scripts\Titlename.cs" />
     <Compile Include="Assets\0.Scripts\ItemBtmDetail.cs" />
+    <Compile Include="Assets\0.Scripts\Titlename.cs" />
     <Compile Include="Assets\0.Scripts\ItemBtmController.cs" />
   </ItemGroup>
   <ItemGroup>

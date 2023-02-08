@@ -104,7 +104,7 @@ public class Kiosk : MonoBehaviour
         if (toggle.isOn)
         {
             Debug.Log(toggle.name);
-            Debug.Log("버튼이 감지되었습니다.");
+            
         }
     }
     void SubMenuSetting(Toggle toggle)

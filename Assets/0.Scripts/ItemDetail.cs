@@ -10,6 +10,7 @@ public class ItemDetail : MonoBehaviour
 
     [SerializeField] private Transform parent;
     [SerializeField] private ItemBtmDetail Itembd;
+
     private ItemBtmController ibCont;
     private KioskData kioskData;
 
@@ -56,7 +57,15 @@ public class ItemDetail : MonoBehaviour
     {
         if (ibCont.IsCheck(kioskData.name, kioskData))
         {
-            Instantiate(Itembd, parent);
+            ItemBtmDetail ibd = Instantiate(Itembd, parent);
+            ibd.DataSetting(kioskData, ibCont);
+
+            ibCont.ItemDetails.Add(ibd);
         }
+        else
+        {
+            ibCont.AddCount(kioskData.name);
+        }
+        ibCont.TotalPrice();
     }
 }
